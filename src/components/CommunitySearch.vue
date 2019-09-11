@@ -25,7 +25,7 @@
 </template>
 
 <script>
-   import CityMap from "../components/const/CityMap"
+  import CityMap from "../components/const/CityMap"
 
   export default {
     name: "community-search",
