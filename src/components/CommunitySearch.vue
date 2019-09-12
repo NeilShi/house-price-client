@@ -26,6 +26,7 @@
 
 <script>
   import CityMap from "../components/const/CityMap"
+  import Request from "../utils/Request"
 
   export default {
     name: "community-search",
@@ -87,25 +88,23 @@
           }, 1000)
         }
         if (node.level === 1) {
-          this.searchDistrict(node.data.value);
+          this.axios.post('http://localhost:8899/location/district', {
+            city: node.data.value
+          })
+            .then(response => {
+              const {level} = node;
+              const nodes = response.data.map(district => ({
+                value: Object.keys(district)[0],
+                label: Object.values(district)[0],
+                leaf: level >= 2
+              }));
+              resolve(nodes);
+            })
+            .catch(error => {
+              console.log(error)
+            });
         }
       },
-
-      searchDistrict(city) {
-        this.axios.post('http://localhost:8899/location/district', {
-            city: city
-          })
-          .then(function (response) {
-            console.log(response)
-          })
-          .catch(function (error) {
-            console.log(error)
-          })
-      },
-
-      // searchArea(district) {
-      //
-      // }
     },
 
     mounted() {
